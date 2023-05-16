@@ -1,16 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSelector } from '@reduxjs/toolkit';
+import { selectContacts } from './contacts/selectors';
+import { selectFilter } from './filter/selectors';
 
-export const filterSlice = createSlice({
-  name: 'filter',
-  initialState: {
-    value: '',
-  },
-
-  reducers: {
-    setFilter(state, action) {
-      state.value = action.payload.toLowerCase();
-    },
-  },
-});
-
-export const { setFilter } = filterSlice.actions;
+export const selectVisibleContacts = createSelector(
+  [selectContacts, selectFilter],
+  (contacts, filter) => {
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter)
+    );
+  }
+);

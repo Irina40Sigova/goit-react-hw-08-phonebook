@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { filterContact } from '../../redux/filter/filterSlice';
+import { setFilter } from '../../redux/filter/filterSlice';
 import { selectFilter } from 'redux/filter/selectors';
 import { Form } from 'react-bootstrap';
 
@@ -9,7 +9,7 @@ export const Filter = () => {
 
   const onChange = e => {
     const value = e.target.value.toLowerCase();
-    dispatch(filterContact(value));
+    dispatch(setFilter(value));
   };
 
   return (

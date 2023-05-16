@@ -3,8 +3,8 @@ import { Formik, Form as FormikForm, ErrorMessage, Field } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import * as Yup from 'yup';
 
-import { addContact } from 'redux/contacts/contactsOperations';
-import { selectContacts } from 'redux/contacts/contactsSelectors';
+import { addContact } from 'redux/contacts/operations';
+import { selectContacts } from 'redux/contacts/selectors';
 
 const initialValues = {
   name: '',
