@@ -9,7 +9,7 @@ import {
   selectIsLoadingContacts,
 } from 'redux/contacts/selectors';
 //chakra
-import { Box, Heading } from '@chakra-ui/react';
+import { Box, Heading, Text } from '@chakra-ui/react';
 import { ContactList } from 'components/ContactList/ContactList';
 import { useEffect } from 'react';
 
@@ -27,7 +27,6 @@ export default function Contacts() {
     <>
       <Box display={'flex'} flexDirection={'column'} position={'relative'}>
         <ContactForm />
-        {/* <ContactList /> */}
 
         {isLoading && !error && <b>Request in progress...</b>}
         {contacts.length > 0 ? (
@@ -51,7 +50,9 @@ export default function Contacts() {
             <ContactList />
           </Box>
         ) : (
-          'You have no contacts'
+          <Text fontSize="50px" color="blue">
+            'You have no contacts'
+          </Text>
         )}
       </Box>
     </>

@@ -36,7 +36,7 @@ export const RegisterForm = () => {
   };
 
   return (
-    <Flex bg="blue.100" align="center" justify="center" h="100vh">
+    <Flex align="center" justify="center" h="100vh">
       <Box
         bg="blue.300"
         p={6}
