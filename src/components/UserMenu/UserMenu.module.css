@@ -6,4 +6,17 @@
 
 .username {
   font-weight: 700;
+  color: #0000ff;
+  font-size: 25px;
+}
+.btn {
+  border: none;
+  padding: 8px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 25px;
+  border-bottom: darkblue;
+  color: #0000ff;
+  background-color: rgb(240, 240, 94);
 }

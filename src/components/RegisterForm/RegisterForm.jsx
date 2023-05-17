@@ -1,4 +1,9 @@
 import { Formik, Field } from 'formik';
+import { useDispatch } from 'react-redux';
+import { register } from 'redux/auth/operations';
+import { ArrowRightIcon } from '@chakra-ui/icons';
+import * as Yup from 'yup';
+//chakra
 import {
   Box,
   Button,
@@ -10,12 +15,25 @@ import {
   Input,
   VStack,
 } from '@chakra-ui/react';
-import { useDispatch } from 'react-redux';
-import { register } from 'redux/auth/operations';
-import { ArrowRightIcon } from '@chakra-ui/icons';
+
+const Schema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, 'Too Short!')
+    .max(25, 'Too Long!')
+    .required('Name is required'),
+  email: Yup.string().email().required('Email is required'),
+  password: Yup.string().min(7, 'Too Short!').required('Password is required'),
+  rememberMe: Yup.bool().oneOf([true], 'Field must be checked'),
+});
 
 export const RegisterForm = () => {
   const dispatch = useDispatch();
+
+  const onSubmit = (formData, actions) => {
+    // alert(JSON.stringify(formData));
+    dispatch(register({ ...formData }));
+    actions.resetForm();
+  };
 
   return (
     <Flex bg="blue.100" align="center" justify="center" h="100vh">
@@ -34,28 +52,13 @@ export const RegisterForm = () => {
             password: '',
             rememberMe: false,
           }}
-          onSubmit={values => {
-            alert(JSON.stringify(values, null, 2));
-          }}
+          onSubmit={onSubmit}
+          validationSchema={Schema}
         >
-          {({
-            handleSubmit = (formData, actions) => {
-              dispatch(register({ ...formData }));
-              actions.resetForm();
-            },
-            errors,
-            touched,
-          }) => (
-            <form
-              onSubmit={
-                (handleSubmit = (formData, actions) => {
-                  dispatch(register({ ...formData }));
-                  actions.resetForm();
-                })
-              }
-            >
+          {({ handleSubmit, errors, touched }) => (
+            <form onSubmit={handleSubmit}>
               <VStack spacing={4} align="flex-start">
-                <FormControl>
+                <FormControl isInvalid={!!errors.name && touched.name}>
                   <FormLabel htmlFor="name" fontSize="30px">
                     Username
                   </FormLabel>
@@ -63,13 +66,15 @@ export const RegisterForm = () => {
                     as={Input}
                     id="name"
                     name="name"
-                    type="name"
+                    type="text"
                     variant="filled"
                     fontSize="20px"
                     bg="blue.100"
+                    w={'90%'}
                   />
+                  <FormErrorMessage>{errors.name}</FormErrorMessage>
                 </FormControl>
-                <FormControl>
+                <FormControl isInvalid={!!errors.email && touched.email}>
                   <FormLabel htmlFor="email" fontSize="30px">
                     Email Address
                   </FormLabel>
@@ -77,11 +82,13 @@ export const RegisterForm = () => {
                     as={Input}
                     id="email"
                     name="email"
-                    type="email"
+                    type="text"
                     variant="filled"
                     fontSize="20px"
                     bg="blue.100"
+                    w={'90%'}
                   />
+                  <FormErrorMessage>{errors.email}</FormErrorMessage>
                 </FormControl>
                 <FormControl isInvalid={!!errors.password && touched.password}>
                   <FormLabel htmlFor="password" fontSize="30px">
@@ -95,26 +102,23 @@ export const RegisterForm = () => {
                     variant="filled"
                     fontSize="20px"
                     bg="blue.100"
-                    validate={value => {
-                      let error;
-
-                      if (value.length < 5) {
-                        error = 'Password must contain at least 6 characters';
-                      }
-
-                      return error;
-                    }}
+                    w={'90%'}
                   />
                   <FormErrorMessage>{errors.password}</FormErrorMessage>
                 </FormControl>
-                <Field
-                  as={Checkbox}
-                  id="rememberMe"
-                  name="rememberMe"
-                  colorScheme="blue.100"
+                <FormControl
+                  isInvalid={!!errors.rememberMe && touched.rememberMe}
                 >
-                  Remember me?
-                </Field>
+                  <Field
+                    as={Checkbox}
+                    id="rememberMe"
+                    name="rememberMe"
+                    colorScheme="blue.100"
+                  >
+                    Remember me?
+                  </Field>
+                  <FormErrorMessage>{errors.rememberMe}</FormErrorMessage>
+                </FormControl>
                 <Button
                   type="submit"
                   colorScheme="yellow"
@@ -132,97 +136,3 @@ export const RegisterForm = () => {
     </Flex>
   );
 };
-
-// import { useDispatch } from 'react-redux';
-// import { register } from 'redux/auth/operations';
-// import { object, string } from 'yup';
-// import { Formik } from 'formik';
-// import { Box, Button, Flex, FormLabel, Input, VStack } from '@chakra-ui/react';
-// import { ArrowRightIcon } from '@chakra-ui/icons';
-
-// const initialValues = {
-//   name: '',
-//   email: '',
-//   password: '',
-// };
-
-// const Schema = object({
-//   name: string()
-//     .required('Name is required')
-//     .min(2, 'Too Short!')
-//     .max(25, 'Too Long!'),
-//   email: string().email('Invalid email').required('Email is required'),
-//   password: string().required('Password is required'),
-// });
-
-// export const RegisterForm = () => {
-// const dispatch = useDispatch();
-
-// const handleSubmit = (formData, actions) => {
-//   dispatch(register({ ...formData }));
-//   actions.resetForm();
-// };
-
-//   return (
-//     <Flex bg="blue.100" align="center" justify="center" h="100vh">
-//       <Box
-//         p={16}
-//         rounded="md"
-//         bg="blue.400"
-//         position={'fixed'}
-//         top={250}
-//         w={'20%'}
-//       >
-//         <Formik
-//           initialValues={initialValues}
-//           validationSchema={Schema}
-//           onSubmit={handleSubmit}
-//         >
-//           <VStack align="flex-start" spacing={5}>
-//             <FormLabel htmlFor="name" fontSize="30px">
-//               Username
-//             </FormLabel>
-//             <Input
-//               name="name"
-//               type="name"
-//               placeholder="Username"
-//               bg="blue.100"
-//               fontSize="20px"
-//             />
-
-//             <FormLabel htmlFor="email" fontSize="30px">
-//               Email Address
-//             </FormLabel>
-//             <Input
-//               name="email"
-//               type="email"
-//               placeholder="Email Address"
-//               bg="blue.100"
-//               fontSize="20px"
-//             />
-//             <FormLabel htmlFor="password" fontSize="30px">
-//               Password
-//             </FormLabel>
-//             <Input
-//               name="password"
-//               type="password"
-//               placeholder="Password"
-//               bg="blue.100"
-//               fontSize="20px"
-//             />
-//             <Button
-//               colorScheme="yellow"
-//               width="100%"
-//               height="50px"
-//               fontSize="20px"
-//               rightIcon={<ArrowRightIcon />}
-//               type="submit"
-//             >
-//               Register
-//             </Button>
-//           </VStack>
-//         </Formik>
-//       </Box>
-//     </Flex>
-//   );
-// };

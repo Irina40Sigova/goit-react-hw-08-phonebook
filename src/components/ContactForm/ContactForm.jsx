@@ -1,46 +1,30 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { Formik, Form as FormikForm, ErrorMessage, Field } from 'formik';
-import { Button, Form } from 'react-bootstrap';
-import * as Yup from 'yup';
-
+import { Field, Formik } from 'formik';
 import { addContact } from 'redux/contacts/operations';
 import { selectContacts } from 'redux/contacts/selectors';
-
-const initialValues = {
-  name: '',
-  number: '',
-};
-
-const nameRegex =
-  /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/gm;
-
-const numberRegex =
-  /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/gm;
+import { useDispatch, useSelector } from 'react-redux';
+import * as Yup from 'yup';
+//chakra
+import {
+  Box,
+  FormControl,
+  FormLabel,
+  Input,
+  Button,
+  FormErrorMessage,
+  Flex,
+  VStack,
+} from '@chakra-ui/react';
 
 const Schema = Yup.object().shape({
-  name: Yup.string()
-    .min(2, 'Too Short!')
-    .max(20, 'Too Long!')
-    .matches(
-      nameRegex,
-      'Name may contain only letters, apostrophe, dash and spaces'
-    )
-    .required(),
-  number: Yup.string()
-    .min(6, 'Too Short!')
-    .max(15, 'Too Long!')
-    .matches(
-      numberRegex,
-      'Phone number must be digits and can contain spaces, dashes, parentheses and can start with +'
-    )
-    .required(),
+  name: Yup.string().min(2, 'Too Short!').max(20, 'Too Long!').required(),
+  number: Yup.string().min(6, 'Too Short!').max(15, 'Too Long!').required(),
 });
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
 
-  const handleSubmit = (formData, actions) => {
+  const onSubmit = (formData, actions) => {
     const sameName = contacts.find(
       el => el.name.toLowerCase() === formData.name.toLowerCase()
     );
@@ -52,28 +36,75 @@ export const ContactForm = () => {
   };
 
   return (
-    <Formik
-      initialValues={initialValues}
-      onSubmit={handleSubmit}
-      validationSchema={Schema}
-    >
-      <Form as={FormikForm} className="mb-5">
-        <Form.Group className="mb-3" controlId="formContactName">
-          <Form.Label>
-            Name
-            <Form.Control as={Field} type="text" name="name" />
-            <ErrorMessage name="name" component="div" />
-          </Form.Label>
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formContactPhone">
-          <Form.Label>
-            Phone
-            <Form.Control as={Field} type="tel" name="number" />
-          </Form.Label>
-          <ErrorMessage name="number" component="div" />
-        </Form.Group>
-        <Button type="submit">Add contact</Button>
-      </Form>
-    </Formik>
+    <Flex bg="blue.100" align="center" justify="center" h="100vh">
+      <Box
+        bg="blue.300"
+        p={6}
+        rounded="md"
+        w={'15%'}
+        position={'fixed'}
+        top={150}
+      >
+        <Formik
+          initialValues={{
+            name: '',
+            number: '',
+          }}
+          onSubmit={onSubmit}
+          validationSchema={Schema}
+        >
+          {({ handleSubmit, errors, touched }) => (
+            <form onSubmit={handleSubmit}>
+              <VStack spacing={10} w={'90%'}>
+                <FormControl isInvalid={!!errors.name && touched.name}>
+                  <FormLabel htmlFor="name" fontSize="30px" fontWeight={700}>
+                    Name
+                  </FormLabel>
+                  <Field
+                    as={Input}
+                    id="name"
+                    name="name"
+                    type="text"
+                    variant="filled"
+                    fontSize="15px"
+                    bg="blue.100"
+                    pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+                    title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+                    required
+                  />
+                  <FormErrorMessage>{errors.name}</FormErrorMessage>
+                </FormControl>
+                <FormControl isInvalid={!!errors.number && touched.number}>
+                  <FormLabel htmlFor="name" fontSize="30px" fontWeight={700}>
+                    Number
+                  </FormLabel>
+                  <Field
+                    as={Input}
+                    variant="filled"
+                    fontSize="15px"
+                    bg="blue.100"
+                    type="tel"
+                    name="number"
+                    pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+                    title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+                    required
+                  />
+                  <FormErrorMessage>{errors.email}</FormErrorMessage>
+                </FormControl>
+                <Button
+                  fontSize="20px"
+                  colorScheme="yellow"
+                  width="full"
+                  padding={4}
+                  type="submit"
+                >
+                  Add contact
+                </Button>
+              </VStack>
+            </form>
+          )}
+        </Formik>
+      </Box>
+    </Flex>
   );
 };

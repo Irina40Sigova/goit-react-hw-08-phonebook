@@ -24,7 +24,7 @@ export const App = () => {
   return isRefreshing ? (
     <b>Refreshing user...</b>
   ) : (
-    <ChakraProvider>
+    <ChakraProvider resetCSS={false}>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
