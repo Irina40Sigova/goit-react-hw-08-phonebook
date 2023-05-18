@@ -1,4 +1,3 @@
-import img from '../../src/img/tell.jpg';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchContacts } from 'redux/contacts/operations';
 import { ContactForm } from 'components/ContactForm/ContactForm';
@@ -26,14 +25,16 @@ export default function Contacts() {
   return (
     <>
       <Box display={'flex'} flexDirection={'column'} position={'relative'}>
+        <Text fontSize="6xl" as="i" textAlign={['left', 'center']}>
+          Phonebook
+        </Text>
         <ContactForm />
 
         {isLoading && !error && <b>Request in progress...</b>}
         {contacts.length > 0 ? (
           <Box
-            backgroundColor={img}
             shadow={'dark-lg'}
-            p={'10'}
+            p="16"
             m={'auto'}
             mt={5}
             w={330}

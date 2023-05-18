@@ -17,8 +17,8 @@ export const Filter = () => {
       <Form.Label> Find contacts by name</Form.Label>
       <Form.Control
         type="text"
-        onChange={onChange}
         placeholder="Taras"
+        onChange={onChange}
         value={filterValue}
       />
     </Form.Group>

@@ -38,12 +38,12 @@ export const ContactForm = () => {
   return (
     <Flex align="center" justify="center" h="40vh">
       <Box
-        bg="blue.300"
-        p={6}
+        boxShadow="dark-lg"
+        p="16"
         rounded="md"
-        w={'15%'}
-        position={'fixed'}
-        top={150}
+        bg="white"
+        pos="absolute"
+        margin="0"
       >
         <Formik
           initialValues={{
@@ -55,9 +55,9 @@ export const ContactForm = () => {
         >
           {({ handleSubmit, errors, touched }) => (
             <form onSubmit={handleSubmit}>
-              <VStack spacing={10} w={'90%'}>
+              <VStack spacing={10}>
                 <FormControl isInvalid={!!errors.name && touched.name}>
-                  <FormLabel htmlFor="name" fontSize="30px" fontWeight={700}>
+                  <FormLabel htmlFor="name" fontSize="15px" fontWeight={700}>
                     Name
                   </FormLabel>
                   <Field
@@ -65,29 +65,24 @@ export const ContactForm = () => {
                     id="name"
                     name="name"
                     type="text"
-                    variant="filled"
-                    fontSize="15px"
-                    bg="blue.100"
-                    pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-                    title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-                    required
+                    placeholder="name"
+                    variant="unstyled"
+                    fontSize="25px"
                   />
                   <FormErrorMessage>{errors.name}</FormErrorMessage>
                 </FormControl>
                 <FormControl isInvalid={!!errors.number && touched.number}>
-                  <FormLabel htmlFor="name" fontSize="30px" fontWeight={700}>
+                  <FormLabel htmlFor="name" fontSize="15px" fontWeight={700}>
                     Number
                   </FormLabel>
                   <Field
                     as={Input}
-                    variant="filled"
-                    fontSize="15px"
-                    bg="blue.100"
-                    type="tel"
+                    id="number"
                     name="number"
-                    pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-                    title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-                    required
+                    placeholder="phone number"
+                    variant="unstyled"
+                    fontSize="25px"
+                    type="tel"
                   />
                   <FormErrorMessage>{errors.email}</FormErrorMessage>
                 </FormControl>

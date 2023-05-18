@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { logIn } from 'redux/auth/operations';
 import { Field, Formik } from 'formik';
+import * as Yup from 'yup';
 import {
   Box,
   Button,
@@ -12,41 +13,29 @@ import {
   VStack,
 } from '@chakra-ui/react';
 
+const Schema = Yup.object().shape({
+  email: Yup.string().email().required('Email is required'),
+  password: Yup.string().min(7, 'Too Short!').required('Password is required'),
+});
+
 export const LoginForm = () => {
   const dispatch = useDispatch();
 
   const onSubmit = (formData, actions) => {
-    alert(JSON.stringify(formData));
+    // alert(JSON.stringify(formData));
     dispatch(logIn({ ...formData }));
     actions.resetForm();
   };
 
-  // const onSubmit = e => {
-  //   const form = e.currentTarget;
-  //   alert(
-  //     JSON.stringify({
-  //       email: form.elements.email.value,
-  //       password: form.elements.password.value,
-  //     })
-  //   );
-  //   dispatch(
-  //     logIn({
-  //       email: form.elements.email.value,
-  //       password: form.elements.password.value,
-  //     })
-  //   );
-  //   form.reset();
-  // };
-
   return (
-    <Flex align="center" justify="center" h="100vh">
+    <Flex align="center" justify="center" h="50vh">
       <Box
-        bg="blue.200"
-        p={8}
+        boxShadow="dark-lg"
+        p="16"
         rounded="md"
-        w={'20%'}
-        position={'fixed'}
-        top={250}
+        bg="white"
+        pos="absolute"
+        margin="0"
       >
         <Formik
           initialValues={{
@@ -54,6 +43,7 @@ export const LoginForm = () => {
             password: '',
           }}
           onSubmit={onSubmit}
+          validationSchema={Schema}
         >
           {({ handleSubmit, errors, touched }) => (
             <form onSubmit={handleSubmit}>

@@ -36,14 +36,14 @@ export const RegisterForm = () => {
   };
 
   return (
-    <Flex align="center" justify="center" h="100vh">
+    <Flex align="center" justify="center" h="50vh">
       <Box
-        bg="blue.300"
-        p={6}
+        boxShadow="dark-lg"
+        p="16"
         rounded="md"
-        w={'20%'}
-        position={'fixed'}
-        top={150}
+        bg="white"
+        pos="absolute"
+        margin="0"
       >
         <Formik
           initialValues={{
@@ -113,7 +113,7 @@ export const RegisterForm = () => {
                     as={Checkbox}
                     id="rememberMe"
                     name="rememberMe"
-                    colorScheme="blue.100"
+                    colorScheme="purple"
                   >
                     Remember me?
                   </Field>
@@ -126,7 +126,7 @@ export const RegisterForm = () => {
                   rightIcon={<ArrowRightIcon />}
                   width="full"
                 >
-                  Login
+                  Register
                 </Button>
               </VStack>
             </form>
